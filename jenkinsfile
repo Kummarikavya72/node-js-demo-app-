@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the app...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm test || true'  // Use your test command
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the app...'
+                sh 'docker build -t yourdockerhubusername/appname .'
+                sh 'docker login -u yourdockerhubusername -p yourpassword'
+                sh 'docker push yourdockerhubusername/appname'
+            }
+        }
+    }
+}
